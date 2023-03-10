@@ -1,0 +1,724 @@
+// Material(
+//                   elevation: 5,
+//                   child: Container(
+//                       width: 500.0,
+//                       height: 200.0,
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(15.0),
+//                       ),
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(15.0),
+//                         child: Image.asset(
+//                           "assets/image02.jpg",
+//                           fit: BoxFit.cover,
+//                         ),
+//                       )),
+//                 )
+
+// Padding(
+//             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+//             child: RealestateList(),
+
+// appBar: AppBar(
+//           elevation: 0.0,
+//           backgroundColor: Colors.white,
+//           leading: Icon(
+//             Icons.sort,
+//             color: Colors.black,
+//           ),
+//         ),
+
+For nul-checked value
+
+color: iconColor ?? Colors.black,
+
+
+
+SizedBox(
+                  height: 40.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: ((context, index) {
+                      return Row(
+                        children: [
+                          RoundedButton(
+                            textSuggestions: textSuggestions[index],
+                          ),
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+                SizedBox(
+                  height: 40.0,
+                ),
+                SizedBox(
+                  height: 200.0,
+                  child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: ((context, index) {
+                      return RealCard(itemIndex: index + 1);
+                    }),
+                  ),
+                ),
+
+
+
+
+SizedBox(
+                    height: 40.0,
+                    child: ListView(
+                      children: [
+                        Chip(
+                          label: Text("textSuggestions[index]"),
+                          padding: const EdgeInsets.all(12.0),
+                          backgroundColor: Colors.black12,
+                        ),
+                        Chip(
+                          label: Text("textSuggestions[index]"),
+                          padding: const EdgeInsets.all(12.0),
+                          backgroundColor: Colors.black12,
+                        )
+                      ],
+                    ),
+                  ),             
+
+
+
+
+
+                  Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "City",
+                    style: TextStyle(color: Colors.black54, fontSize: 10),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  height: 46.0,
+                  child: Text("San Francisco",
+                      style: TextStyle(fontSize: 30),
+                      textAlign: TextAlign.left),
+                ),
+                Divider(
+                  color: Colors.black12,
+                ),
+                SizedBox(
+                  height: 25.0,
+                ),
+                SizedBox(
+                  height: 40.0,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: ((context, index) {
+                      return Row(
+                        children: [
+                          // RoundedButton(
+                          //   textSuggestions: textSuggestions[index],
+                          // ),
+                          Chip(
+                            label: Text(textSuggestions[index]),
+                            padding: const EdgeInsets.all(12.0),
+                            backgroundColor: Colors.black12,
+                          ),
+                          SizedBox(
+                            width: 15.0,
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Expanded(
+                  // height: 200.0,
+                  child: ListView.builder(
+                    // physics: NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    itemBuilder: ((context, index) {
+                      return RealCard(itemIndex: index + 1);
+                    }),
+                  ),
+                ),
+
+class PersistentHeader extends SliverPersistentHeaderDelegate {
+  PersistentHeader({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+  @override
+  double get minExtent => minHeight;
+  @override
+  double get maxExtent => math.max(maxHeight, minHeight);
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(PersistentHeader oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
+}
+
+------- Using sliverList ------
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Kindacode.com',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          backgroundColor: Colors.amber,
+          title: Text('Kindacode.com'),
+          expandedHeight: 30,
+          collapsedHeight: 150,
+        ),
+        const SliverAppBar(
+          backgroundColor: Colors.green,
+          title: Text('Have a nice day'),
+          floating: true,
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return Card(
+                margin: const EdgeInsets.all(15),
+                child: Container(
+                  color: Colors.blue[100 * (index % 9 + 1)],
+                  height: 80,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Item $index",
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                ),
+              );
+            },
+            childCount: 1000, // 1000 list items
+          ),
+        ),
+      ],
+    ));
+  }
+}
+
+
+
+
+
+
+
+-----ANOTHER TEST SCRIPT -----
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+//Test2 is just a good implementation of test
+//The issue here is there is a default padding in the SliverAppBar or the simple AppBar
+// Here the chips can only scroll to the edge of the Sliverappbar...
+//But i think that is not the optimal solution
+//The solution is to use the flexibleSpace property and the flexibleSpaceBar
+
+void main() => runApp(HomePage());
+
+class HomePage extends StatelessWidget {
+  static const List<String> textSuggestions = [
+    r"<$220.000",
+    "For sale",
+    "3-4 beds",
+    "Los Angeles",
+    "Studio",
+    "Small house",
+    "45ft^2"
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "The realestate app",
+      home: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: RawMaterialButton(
+                    constraints:
+                        BoxConstraints(minHeight: 45.0, minWidth: 45.0),
+                    onPressed: (() {}),
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.black54, width: 0.1),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Icon(
+                      size: 30.0,
+                      Icons.sort,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  trailing: RoundedButton(
+                    icon: Icons.search,
+                    // iconColor: Colors.blue,
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Expanded(
+                  child: NestedScrollView(
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return <Widget>[
+                        SliverAppBar(
+                          pinned: true,
+                          toolbarHeight: 50.0,
+                          flexibleSpace: Container(
+                            height: 40.0,
+                            child: new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 6,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  children: [
+                                    Chip(
+                                      label: Text(textSuggestions[index]),
+                                      padding: const EdgeInsets.all(12.0),
+                                      backgroundColor: Colors.black12,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                          // backgroundColor: Colors.white,
+                          // toolbarHeight: 86.0,
+                          // forceElevated: true,
+                          // elevation: 0.0,
+                          // pinned: true,
+                          // // title: AppBar(
+                          // title: Container(
+                          //   // height: 70.0,
+                          //   child: Column(
+                          //     children: [
+                          //       // SizedBox(
+                          //       //   height: 0.0,
+                          //       // ),
+                          //       Container(
+                          //         alignment: Alignment.centerLeft,
+                          //         child: Text(
+                          //           "City",
+                          //           style: TextStyle(
+                          //               color: Colors.black54, fontSize: 10),
+                          //           textAlign: TextAlign.left,
+                          //         ),
+                          //       ),
+                          //       Container(
+                          //         alignment: Alignment.bottomLeft,
+                          //         height: 46.0,
+                          //         child: Text(
+                          //           "San Francisco",
+                          //           style: TextStyle(
+                          //             fontSize: 30,
+                          //             color: Colors.black,
+                          //           ),
+                          //           textAlign: TextAlign.left,
+                          //         ),
+                          //       ),
+                          //       Divider(
+                          //         color: Colors.black12,
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                        ),
+                      ];
+                    },
+                    body: new Column(
+                      children: <Widget>[
+                        // new FlutterLogo(size: 120.0, textColor: Colors.green),
+                        SizedBox(
+                          height: 80.0,
+                        ),
+                        Container(
+                          height: 40.0,
+                          child: new ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 6,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  Chip(
+                                    label: Text(textSuggestions[index]),
+                                    padding: const EdgeInsets.all(12.0),
+                                    backgroundColor: Colors.black12,
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Expanded(
+                          // height: 300.0,
+                          child: new ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: ((context, index) {
+                                return RealCard(itemIndex: index + 1);
+                              })),
+                        ),
+                        // new FlutterLogo(size: 100.0, textColor: Colors.orange),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class RoundedButton extends StatelessWidget {
+  final Color? iconColor;
+  final Function? onPressed;
+  final IconData? icon;
+  final Color? fillColor;
+  final String? textSuggestions;
+  RoundedButton(
+      {this.icon,
+      this.onPressed,
+      this.iconColor,
+      this.fillColor,
+      this.textSuggestions});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      fillColor: fillColor,
+      constraints: BoxConstraints(minHeight: 45.0, minWidth: 45.0),
+      onPressed: (() {}),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.black54, width: 0.1),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: icon != null
+          ? Icon(
+              icon,
+              size: 20,
+              color: iconColor ?? Colors.black,
+            )
+          : textSuggestions != null
+              ? Text(
+                  textSuggestions!,
+                )
+              : null,
+    );
+  }
+}
+
+class RealCard extends StatelessWidget {
+  final int itemIndex;
+  RealCard({required this.itemIndex});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              // alignment: Alignment.center,
+              // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              width: 500,
+              height: 200,
+              child: Card(
+                elevation: 0.0,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                child: Image.asset(
+                  "assets/image0$itemIndex.jpg",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: RoundedButton(
+                icon: Icons.favorite_border_rounded,
+                fillColor: Colors.white,
+              ),
+            )
+          ],
+        ),
+        SizedBox(height: 10.0),
+        Row(
+          children: [
+            Text(
+              r"$200.000",
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            SizedBox(
+              width: 8.0,
+            ),
+            Text(
+              'Jenison, MI 49423, SF',
+              style: TextStyle(fontSize: 15.0, color: Colors.black54),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Text(
+          '4 bedrooms/2 bathrooms/1416 ft^2 exampleeeee',
+          style: TextStyle(fontSize: 15.0),
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(
+          height: 15.0,
+        )
+      ],
+    );
+  }
+}
+
+----- END TEST ------
+
+
+---- ANOTHER TEST ------
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(new MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: new MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      // appBar: AppBar(
+      //   title: ListTile(
+      //     leading: IconButton(
+      //       icon: Icon(Icons.search),
+      //       onPressed: () {},
+      //     ),
+      //     trailing: Icon(Icons.sort),
+      //   ),
+      // ),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: Colors.white12,
+              toolbarHeight: 90.0,
+              forceElevated: true,
+              elevation: 0.0,
+              pinned: true,
+              // title: AppBar(
+              title: Container(
+                height: 100.0,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "City",
+                        style: TextStyle(color: Colors.black54, fontSize: 10),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      height: 46.0,
+                      child: Text(
+                        "San Francisco",
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Divider(
+                      color: Colors.black12,
+                    ),
+                  ],
+                ),
+              ),
+
+              // ListTile(
+              //   leading: IconButton(
+              //     icon: Icon(Icons.search),
+              //     onPressed: () {},
+              //   ),
+              //   trailing: Icon(Icons.sort),
+              // ),
+            ),
+          ];
+        },
+        body: new Column(
+          children: <Widget>[
+            new FlutterLogo(size: 120.0, textColor: Colors.green),
+            Container(
+              height: 40.0,
+              child: new ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 50,
+                itemBuilder: (BuildContext context, int index) {
+                  return Chip(
+                    label: Text("textSuggestions[index]"),
+                    padding: const EdgeInsets.all(12.0),
+                    backgroundColor: Colors.black12,
+                  );
+                },
+              ),
+            ),
+            new Expanded(
+              // height: 300.0,
+              child: new ListView.builder(
+                itemCount: 60,
+                itemBuilder: (BuildContext context, int index) {
+                  return new Text('Item $index');
+                },
+              ),
+            ),
+            // new FlutterLogo(size: 100.0, textColor: Colors.orange),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+-------END TEST ------
+
+
+
+
+--- Test 2-----
+
+
+                //           child: IconButton(
+                //           //   onPressed: (() {}),
+                //           //   icon: Icon(Icons.arrow_back),
+                //           //   style: IconButton.styleFrom(
+                //           //     focusColor: colors.onSurfaceVariant,
+                //           //     highlightColor: colors.onSurface,
+                //           //     side: () {} == null
+                //           //         ? BorderSide(
+                //           //             color: Theme.of(context)
+                //           //                 .colorScheme
+                //           //                 .onSurface
+                //           //                 .withOpacity(0.12))
+                //           //         : BorderSide(color: Colors.red),
+                //           //   ).copyWith(
+                //           //     foregroundColor: MaterialStateProperty.resolveWith(
+                //           //         (Set<MaterialState> states) {
+                //           //       if (states.contains(MaterialState.pressed)) {
+                //           //         return colors.onSurface;
+                //           //       }
+                //           //       return null;
+                //           //     }),
+                //           //   ),
+                //           // )),
+                //           // child: IconButton(
+                //           //   icon: const Icon(Icons.filter_drama),
+                //           //   onPressed: () {},
+                //           //   style: IconButton.styleFrom(
+                //           //     focusColor: colors.onSurfaceVariant.withOpacity(0.12),
+                //           //     highlightColor: colors.onSurface.withOpacity(0.12),
+                //           //     side: () {} == null
+                //           //         ? BorderSide(
+                //           //             color: Theme.of(context)
+                //           //                 .colorScheme
+                //           //                 .onSurface
+                //           //                 .withOpacity(0.12))
+                //           //         : BorderSide(color: colors.outline),
+                //           //   ).copyWith(
+                //           //     foregroundColor: MaterialStateProperty.resolveWith(
+                //           //         (Set<MaterialState> states) {
+                //           //       if (states.contains(MaterialState.pressed)) {
+                //           //         return colors.onSurface;
+                //           //       }
+                //           //       return null;
+                //           //     }),
+                //           //   ),
+                //           // ),
+
+                ----END TEST -----
